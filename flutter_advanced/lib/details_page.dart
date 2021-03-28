@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'place_details_model.dart';
 
@@ -36,7 +37,8 @@ class PlaceDetailsPage extends StatelessWidget {
             child: Column(
               children: [
                 _buildPlaceDescriptopnAndRating(),
-                _buildUserActions()
+                _buildUserActions(),
+                _buildTestButton()
               ],
             ),
             flex: 2),
@@ -88,13 +90,61 @@ class PlaceDetailsPage extends StatelessWidget {
     );
   }
 
-  _buildUserActions() {
-    Widget share = _buildSettingElement(Icons.share, "Share");
+  _buildCallButton() {
+    Widget call = _buildSettingElement(Icons.call, "Call");
+    return InkWell(
+      child: call,
+      onTap: () {
+        _call();
+      },
+    );
+  }
+
+  _buildMessageButton() {
     Widget message = _buildSettingElement(Icons.message, "Message");
-    Widget settings = _buildSettingElement(Icons.memory, "Memory");
+    return InkWell(
+      child: message,
+      onTap: () {
+        print("Message Clicked");
+      },
+    );
+  }
+
+  _buildShareButton() {
+    Widget share = _buildSettingElement(Icons.share, "Share");
+    return InkWell(
+      child: share,
+      onTap: () {
+        print("Share Clicked");
+      },
+    );
+  }
+
+  _buildUserActions() {
+    Widget call = _buildCallButton();
+    Widget message = _buildMessageButton();
+    Widget share = _buildShareButton();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [share, message, settings],
+      children: [call, message, share],
     );
+  }
+
+  _buildTestButton() {
+    return RaisedButton(
+      child: Text("Say Hello"),
+      onPressed: () {
+        print('Hello');
+      },
+    );
+  }
+
+  _call() async {
+    var url = 'tel:' + placeDetails.phoneNumber;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

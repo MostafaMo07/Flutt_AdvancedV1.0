@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
         "https://blog.blackcurve.com/hs-fs/hubfs/New_BlackCurve_Images/The%20Future%20of%20Travel%20Pricing.jpg?width=3000&name=The%20Future%20of%20Travel%20Pricing.jpg";
     placeDetails.stars = 54;
     placeDetails.city = "Cairo";
+    placeDetails.phoneNumber = "+20112783659";
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(child: PlaceDetailsPage(placeDetails)),
