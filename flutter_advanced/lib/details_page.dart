@@ -2,7 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import 'place_details_model.dart';
+
 class PlaceDetailsPage extends StatelessWidget {
+  var screenWidth;
+  PlaceDetails placeDetails;
+
+  PlaceDetailsPage(this.placeDetails);
+
   _buildSettingElement(IconData icon, String text) {
     return Column(
       children: [
@@ -18,18 +25,33 @@ class PlaceDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        _buildPlaceImage(),
-        _buildPlaceDescriptopnAndRating(),
-        _buildUserActions()
+        Flexible(
+          child: _buildPlaceImage(),
+          flex: 1,
+        ),
+        Flexible(
+            child: Column(
+              children: [
+                _buildPlaceDescriptopnAndRating(),
+                _buildUserActions()
+              ],
+            ),
+            flex: 2),
       ],
     );
   }
 
   _buildPlaceImage() {
-    return Image.network(
-        "https://blog.blackcurve.com/hs-fs/hubfs/New_BlackCurve_Images/The%20Future%20of%20Travel%20Pricing.jpg?width=3000&name=The%20Future%20of%20Travel%20Pricing.jpg");
+    return Container(
+      width: screenWidth,
+      child: FittedBox(
+        fit: BoxFit.fitWidth,
+        child: Image.network(placeDetails.imageUrl),
+      ),
+    );
   }
 
   _buildPlaceDescriptopnAndRating() {
@@ -44,13 +66,13 @@ class PlaceDetailsPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Main Text Top",
+                  placeDetails.name,
                   style: TextStyle(
                     fontSize: 25,
                   ),
                 ),
                 Text(
-                  "sub Text",
+                  placeDetails.city,
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 )
               ],
@@ -59,7 +81,7 @@ class PlaceDetailsPage extends StatelessWidget {
               Icons.star,
               color: Colors.red,
             ),
-            Text("41")
+            Text(placeDetails.stars.toString())
           ],
         ),
       ),
